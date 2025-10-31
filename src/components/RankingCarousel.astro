@@ -1,0 +1,221 @@
+---
+// --- データ部分 (変更なし) ---
+const rankingData = [
+  {
+    rank: 1,
+    name: 'ねぎま',
+    price: 200,
+    sales: 114,
+    image: '/images/negima.png',
+    alt: 'ねぎまの画像'
+  },
+  {
+    rank: 2,
+    name: 'ビール',
+    price: 500,
+    sales: 99,
+    image: '/images/momo.png',
+    alt: 'ももの画像'
+  },
+  {
+    rank: 3,
+    name: 'ハート',
+    price: 0,
+    sales: 55,
+    image: '/images/tsukune.png',
+    alt: 'つくねの画像'
+  }
+];
+
+// データを順位ごとに変数に分ける
+const rank1 = rankingData.find(item => item.rank === 1);
+const rank2 = rankingData.find(item => item.rank === 2);
+const rank3 = rankingData.find(item => item.rank === 3);
+---
+
+<!-- 
+  カルーセルに関連する<link>と<script>はすべて削除しました。
+  JavaScriptに依存しないシンプルなHTMLとCSSだけで構成されています。
+-->
+<div class="ranking-grid-container">
+  <!-- 1位のカード -->
+  {rank1 && (
+    <div class="rank-card rank-1">
+      <div class="rank-badge rank-badge-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L9.52 7.14L4 8.09L8.13 12.14L7.05 17.86L12 15.14L16.95 17.86L15.87 12.14L20 8.09L14.48 7.14L12 2Z"></path></svg>
+        <span>1</span>
+      </div>
+      <img src={rank1.image} alt={rank1.alt} class="rank-image" />
+      <div class="rank-content">
+        <h3 class="item-name">{rank1.name}</h3>
+        <p class="item-info">価格: {rank1.price}円</p>
+        <p class="item-sales">予測販売数: {rank1.sales}本</p>
+      </div>
+    </div>
+  )}
+
+  <!-- 2位と3位をまとめるコンテナ -->
+  <div class="rank-others">
+    <!-- 2位のカード -->
+    {rank2 && (
+      <div class="rank-card rank-2">
+        <div class="rank-badge">2</div>
+        <img src={rank2.image} alt={rank2.alt} class="rank-image" />
+        <div class="rank-content">
+          <h3 class="item-name">{rank2.name}</h3>
+          <p class="item-info">価格: {rank2.price}円</p>
+          <p class="item-sales">予測販売数: {rank2.sales}本</p>
+        </div>
+      </div>
+    )}
+
+    <!-- 3位のカード -->
+    {rank3 && (
+      <div class="rank-card rank-3">
+        <div class="rank-badge">3</div>
+        <img src={rank3.image} alt={rank3.alt} class="rank-image" />
+        <div class="rank-content">
+          <h3 class="item-name">{rank3.name}</h3>
+          <p class="item-info">価格: {rank3.price}円</p>
+          <p class="item-sales">予測販売数: {rank3.sales}本</p>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+
+
+<style>
+  /* :rootからサイトのテーマカラーを拝借 */
+  :root {
+    --primary-color: #e67e22;
+    --accent-color: #00ffff;
+  }
+
+  .ranking-grid-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+  }
+
+  .rank-card {
+    position: relative;
+    background-color: #2c2c2c;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    border: 1px solid #444;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .rank-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+  }
+
+  .rank-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .rank-content {
+    padding: 1.5rem;
+    text-align: center;
+    flex-grow: 1; /* 内容が少なくても高さを揃える */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .item-name {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem;
+    color: #f0f0f0; /* index.astroのテキストカラーに合わせる */
+  }
+
+  .item-info, .item-sales {
+    font-size: 1.1rem;
+    color: #ccc;
+    margin: 0.25rem 0;
+  }
+
+  /* 1位を特別扱い */
+  .rank-1 {
+    margin-bottom: 2rem;
+    border: 2px solid var(--accent-color);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+  }
+  .rank-1 .rank-image {
+    height: 400px;
+  }
+  .rank-1 .item-name {
+    color: var(--accent-color);
+    font-size: 2.2rem;
+  }
+
+  /* 2位と3位を横並びにする */
+  .rank-others {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  /* 順位バッジ */
+  .rank-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 45px;
+    height: 45px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    z-index: 10;
+  }
+
+  /* 1位のバッジは王冠付きで豪華に */
+  .rank-badge-1 {
+    background-color: var(--primary-color);
+    border-color: #fff;
+    color: #fff;
+    width: 55px;
+    height: 55px;
+  }
+  .rank-badge-1 svg {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: -20px;
+    left: 10px;
+    color: gold;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+  }
+  .rank-badge-1 span {
+    margin-top: 5px;
+  }
+
+
+  /* レスポンシブ対応 */
+  @media (max-width: 768px) {
+    .rank-1 .rank-image {
+      height: 300px;
+    }
+    /* スマホでは2位と3位を縦積みにする */
+    .rank-others {
+      grid-template-columns: 1fr;
+    }
+  }
+
+</style>
