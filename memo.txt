@@ -1,0 +1,5 @@
+cd /Users/user/Documents/Astro/abdl
+npm run build
+git add .
+git commit -m "画像動画追加"
+git push origin main
